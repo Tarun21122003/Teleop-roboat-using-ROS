@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+import rospy
+from std_msgs.msg import String
+
+def teleop_node():
+    rospy.init_node('teleop_node', anonymous=True)
+
+    motor1_pub = rospy.Publisher('keyboard_input', String, queue_size=10)
+    # motor2_pub = rospy.Publisher('/motor2/cmd_vel', Float64, queue_size=10)
+    print("w:forward , s:backward , d:turn right , a:turn left ")
+    print("1: low speed , 2: medium speed , 3: high speed")
+    print("uturn: take a uturn , sharp: to take sharp turn , 90: to just turn 90 degree approx , 360 : to turn infinite")
+    print("start: to start working , stop: to switch off");
+    motor1_speed = str(input("Enter: "))
+    
+    while not rospy.is_shutdown():
+        motor1_pub.publish(motor1_speed)
+        
+        new_speed = str(input("Enter"))
+        if new_speed:
+            motor1_speed = new_speed
+
+if _name_ == '_main_':
+    try:
+        teleop_node()
+    except rospy.ROSInterruptException:
+        pass
